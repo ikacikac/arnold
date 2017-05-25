@@ -22,8 +22,11 @@ class Terminator:
         self.database = self.config.database
         self.prepare_model()
 
+    def folder_as_module(self):
+        return '.'.join(self.folder.split('/'))
+
     def prepare_config(self):
-        self.config = import_module(self.folder)
+        self.config = import_module(self.folder_as_module())
 
     def prepare_model(self):
         self.model = Migration
@@ -77,7 +80,7 @@ class Terminator:
             )
         else:
             module_name = "{0}.{1}.{2}".format(
-                self.folder, 'migrations', migration
+                self.folder_as_module(), 'migrations', migration
             )
             print("Importing {0}".format(
                 colored(module_name, "blue")
